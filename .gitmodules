@@ -1,9 +1,9 @@
-[submodule "external/glfw"]
-	path = TrueEngine/external/glfw
-	url = https://github.com/glfw/glfw
-[submodule "external/glad"]
+[submodule "TrueEngine/external/glad"]
 	path = TrueEngine/external/glad
 	url = https://github.com/Dav1dde/glad
-[submodule "external/glm"]
+[submodule "TrueEngine/external/glfw"]
+	path = TrueEngine/external/glfw
+	url = https://github.com/glfw/glfw
+[submodule "TrueEngine/external/glm"]
 	path = TrueEngine/external/glm
-	url = https://github.com/g-truc/glm
+	url = https://github.com/glfw/glfw
