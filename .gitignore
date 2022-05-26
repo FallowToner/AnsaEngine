@@ -1,5 +1,7 @@
 # IDE Specific directory
 .idea/
+.vscode/
 
 # Build Directory
 cmake-build-debug/
+build/
