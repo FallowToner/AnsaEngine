@@ -2,9 +2,18 @@ cmake_minimum_required(VERSION 3.16)
 
 project(TrueEngine)
 
-set(SOURCES src/IWindow.cpp)
+set(SOURCES
+        src/Platform/IWindow.cpp
+        src/Platform/ISettings.cpp
+        src/Platform/GLFW_Window.cpp
+        src/Platform/GLFW_Settings.cpp
 
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+        src/Audio/IAudio.cpp
+        src/IO/IKeyboard.cpp
+        src/Platform/GLFW_Settings.cpp
+        )
+
+add_library(${PROJECT_NAME} STATIC ${SOURCES})
 target_compile_definitions(${PROJECT_NAME} PUBLIC TRUE_PLATFORM_LINUX TRUE_BUILD_DLL)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

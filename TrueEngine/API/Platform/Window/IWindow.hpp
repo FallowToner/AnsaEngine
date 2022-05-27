@@ -1,12 +1,16 @@
 #pragma once
 
-#include "API/Platform/Core.hpp"
+// If we need to use as DLL
+//#include "API/Platform/Core.hpp"
 
 namespace API
 {
-    class ENGINE_API IWindow
+    namespace Platform
     {
-    public:
-        static void resolve();
-    };
+        class IWindow
+        {
+        public:
+            static void resolve();
+        };
+    }
 }    // namespace API

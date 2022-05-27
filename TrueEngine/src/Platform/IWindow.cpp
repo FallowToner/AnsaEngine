@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void API::IWindow::resolve()
+void API::Platform::IWindow::resolve()
 {
     std::cout << "Resolve" << '\n';
 }

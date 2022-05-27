@@ -3,7 +3,6 @@
 
 int main()
 {
-    API::IWindow wnd;
-    wnd.resolve();
+    API::Platform::IWindow::resolve();
     std::cout << "Diffs" << '\n';
 }
