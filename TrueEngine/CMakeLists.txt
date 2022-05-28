@@ -4,13 +4,12 @@ project(TrueEngine)
 
 set(SOURCES
         src/Platform/IWindow.cpp
-        src/Platform/ISettings.cpp
-        src/Platform/GLFW_Window.cpp
-        src/Platform/GLFW_Settings.cpp
+        src/Platform/GlfwWindow.cpp
+        src/Platform/Settings/GlfwSettingsData.cpp
+        src/Platform/Settings/GlfwSettings.cpp
 
         src/Audio/IAudio.cpp
         src/IO/IKeyboard.cpp
-        src/Platform/GLFW_Settings.cpp
         )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
