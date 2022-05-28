@@ -3,6 +3,5 @@
 
 int main()
 {
-    API::Platform::IWindow::resolve();
-    std::cout << "Diffs" << '\n';
+	std::cout << "Is Work!" << '\n';
 }
