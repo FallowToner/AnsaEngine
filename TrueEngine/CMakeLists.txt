@@ -4,6 +4,8 @@ project(TrueEngine)
 
 #add_subdirectory(external/googletest)
 
+#SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/cmake)	# needed due to tbb-homebrew bug https://github.com/Homebrew/homebrew-core/pull/36175
+
 set(SOURCES
         src/Platform/IWindow.cpp
         src/Platform/GlfwWindow.cpp
@@ -12,6 +14,7 @@ set(SOURCES
 
         src/Audio/IAudio.cpp
         src/IO/IKeyboard.cpp
+        src/glad.c
         )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
@@ -37,11 +40,4 @@ target_include_directories(${PROJECT_NAME}
 
 
 target_link_libraries(${PROJECT_NAME}
-        PUBLIC
-        glm
-        PRIVATE
-        GL
-        glad
-        glfw
-        #googletest
-        )
+        PRIVATE GL GLU glfw)
