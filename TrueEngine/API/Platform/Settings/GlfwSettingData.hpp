@@ -14,7 +14,7 @@ namespace API::Platform
 
     public:
         virtual void loadFromFile(std::string& path);
-        virtual void loadInFIle(std::string& path);
+        virtual void saveInFIle(std::string& path);
 
     private:
         int         windowWidth;

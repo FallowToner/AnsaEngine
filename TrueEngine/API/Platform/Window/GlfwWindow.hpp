@@ -12,9 +12,8 @@ namespace API::Platform
     class GlfwWindow : IWindow
     {
     public:
-
     private:
-        GLFWwindow* pWindow;
+        GLFWwindow*                   pWindow;
         std::shared_ptr<GlfwSettings> pSettings;
     };
 }    // namespace API::Platform

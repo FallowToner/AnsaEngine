@@ -24,7 +24,7 @@ void API::Platform::GlfwSettingsData::loadFromFile(std::string& path)
  *
  * @error Throws an exception if the file cannot be read/write
  */
-void API::Platform::GlfwSettingsData::loadInFIle(std::string& path)
+void API::Platform::GlfwSettingsData::saveInFIle(std::string& path)
 {
     mINI::INIFile writer(path);
     mINI::INIStructure ini;

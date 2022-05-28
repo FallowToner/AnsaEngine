@@ -12,5 +12,5 @@ namespace API
         public:
             static void resolve();
         };
-    }
+    }    // namespace Platform
 }    // namespace API

@@ -10,8 +10,6 @@ namespace API::Platform
     {
     public:
         void updateSettings();
-        void setupSettings(GlfwSettingsData& settings);
-
     private:
         std::shared_ptr<GlfwSettingsData> settingsData;
     };

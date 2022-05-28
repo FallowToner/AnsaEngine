@@ -2,7 +2,7 @@
 
 #include "API/Platform/Core.hpp"
 
-class ENGINE_API IAudio
+class IAudio
 {
 public:
     IAudio();
