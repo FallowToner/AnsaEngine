@@ -8,28 +8,32 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+#set(CMAKE_CXX_FLAGS )
+
 set(SOURCES
         #----Audio--------files
         src/Audio/AudioManager.cpp
 
         #---Platform------files
         src/Platform/Window/Window.cpp
+        src/Platform/Window/WindowManager.cpp
+        src/Platform/Window/WindowData.cpp
         #---------------------
 
         #---IO------------files
         src/IO/Keyboard.cpp
-        #---------------------
+        API/IO/InputManager.cpp API/IO/InputManager.h
         )
-
-# Add the TrueEngine used libraries
-add_subdirectory(../external/glfw   ${CMAKE_BINARY_DIR}/glfw    )
-add_subdirectory(../external/glm    ${CMAKE_BINARY_DIR}/glm     )
-add_subdirectory(../external/glew   ${CMAKE_BINARY_DIR}/glew    )
-add_subdirectory(../external/fmt    ${CMAKE_BINARY_DIR}/fmt     )
-add_subdirectory(../external/EASTL  ${CMAKE_BINARY_DIR}/EASTL   )
-#----------------------------------
+#--------------------
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})
+
+find_package(glfw3 CONFIG REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(fmt CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
         INTERFACE_INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}
@@ -37,23 +41,23 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         ${CMAKE_CURRENT_SOURCE_DIR}/
         )
 
+#----INCLUDE_LIBRARIES--DIRECTORIES----
 target_include_directories(${PROJECT_NAME}
         PUBLIC
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        glm
         PRIVATE
-        ${PROJECT_SOURCE_DIR}
-        ${GLEW_INCLUDE_DIRS}
-        glfw
-        fmt
         )
+#--------------------------------------
 
+#----LINK_LIBRARIES--------------------
 target_link_libraries(${PROJECT_NAME}
-        PUBLIC glm
+        PUBLIC glm::glm
         PRIVATE
+        GL
+        GLEW::GLEW
         glfw
-        ${GLEW_LIBRARIES}
-        fmt
-        ${EASTL_LIBRARY}
+        fmt::fmt
+        spdlog::spdlog spdlog::spdlog_header_only
         )
+#--------------------------------------

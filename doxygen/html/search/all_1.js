@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['iaudio_3',['IAudio',['../classIAudio.html',1,'']]],
-  ['ikeyboard_4',['IKeyboard',['../classAPI_1_1IO_1_1IKeyboard.html',1,'API::IO']]],
-  ['isettings_5',['ISettings',['../classAPI_1_1Platform_1_1ISettings.html',1,'API::Platform']]],
-  ['isettings_5fdata_6',['ISettings_Data',['../classAPI_1_1Platform_1_1ISettings__Data.html',1,'API::Platform']]],
-  ['iwindow_7',['IWindow',['../classAPI_1_1Platform_1_1IWindow.html',1,'API::Platform']]]
+  ['getheight_1',['getHeight',['../classTrueEngine_1_1Platform_1_1WindowData.html#a68a7a7891e0305f84f62925c37535e29',1,'TrueEngine::Platform::WindowData']]],
+  ['gettitle_2',['getTitle',['../classTrueEngine_1_1Platform_1_1WindowData.html#a0f36a3bd16ebd4934768f5b168fbccf4',1,'TrueEngine::Platform::WindowData']]],
+  ['getwidth_3',['getWidth',['../classTrueEngine_1_1Platform_1_1WindowData.html#a0303ac1402fd4c815c4375539d1e2a62',1,'TrueEngine::Platform::WindowData']]]
 ];
