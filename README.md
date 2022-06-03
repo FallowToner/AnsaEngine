@@ -11,7 +11,7 @@ This means that you can easily extend upon the engine and use the included tools
 True Engine use CMake build-system to compile and link libraries. 
 This means that you can use any C++ compiler you want to compile the engine.
 
-## Installing and running MxEngine
+## Installing and running TrueSoul_Engine
 1. [Clone the repository](https://github.com/ansa-sequence/TrueSoul_Engine)
 2. [Install vcpkg](https://vcpkg.io/en/index.html)
 3. Install dependencies :
