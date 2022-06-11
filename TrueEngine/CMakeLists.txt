@@ -16,8 +16,7 @@ set(SOURCES
 
         #---Platform------files
         src/Platform/Window/Window.cpp
-        src/Platform/Window/WindowManager.cpp
-        src/Platform/Window/WindowData.cpp
+        src/Platform/Window/WindowState.cpp
         #---------------------
 
         #---IO------------files

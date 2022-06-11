@@ -1,7 +1,10 @@
 # IDE Specific directory
 .idea/
 .vscode/
+.vs/
+out/
 
 # Build Directory
 cmake-build-debug/
 build/
+doxygen/
