@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION ${CMAKE_VER})
+cmake_minimum_required(VERSION 3.16)
 
 include(test_template.cmake)
 
