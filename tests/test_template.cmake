@@ -1,0 +1,17 @@
+macro(EmplaceTest)
+	set(options VERBOSE)
+	set(oneValueArgs TESTNAME)
+	set(multiValueArgs SOURCES INCLUDE_DIRS LIBRARIES)
+	cmake_parse_arguments(T_VAR "${options}" "${oneValueArgs}"
+                          "${multiValueArgs}" ${ARGN})
+
+	message("---------------------------------<${T_VAR_TESTNAME}>-----------------------------------")
+	add_executable(${T_VAR_TESTNAME} ${T_VAR_SOURCES})
+	message("Sources: ${T_VAR_SOURCES}")
+	target_include_directories(${T_VAR_TESTNAME} PRIVATE ${T_VAR_INCLUDE_DIRS})
+	message("Include dir-s: ${T_VAR_INCLUDE_DIRS}")
+	target_link_libraries(${T_VAR_TESTNAME} PRIVATE gtest gmock gtest_main ${T_VAR_LIBRARIES})
+	message("Link libraries: ${T_VAR_LIBRARIES}")
+	gtest_discover_tests(${T_VAR_TESTNAME})
+	message("---------------------------------------<>---------------------------------------")
+endmacro()
