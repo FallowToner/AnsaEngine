@@ -1,9 +1,7 @@
-#pragma once
+#ifndef Window_hpp
+#define Window_hpp
 
-#include "WindowData.hpp"
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
+#include "WindowState.hpp"
 
 namespace TrueEngine
 {
@@ -16,11 +14,19 @@ namespace TrueEngine
 		class Window
 		{
 		public:
-			void CreateWindow();
+			Window(int width, int hight, std::string title, GLFWmonitor* monitor, GLFWwindow* shareWindow);
+			virtual ~Window();
+
+			Window(const Window&) = delete;
+			Window(Window&&) = delete;
+			Window& operator=(const Window&) = delete;
+			Window& operator=(Window&&) = delete;
 
 		private:
-			using WindowHandler = GLFWwindow*;
-			WindowHandler windowHandler;
+			GLFWwindow* mWindowHandle;
+			WindowState mCurrentState{};
 		};
 	} // namespace Platform
 } // namespace TrueEngine
+
+#endif // Window_hpp
