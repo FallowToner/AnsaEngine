@@ -1,4 +1,4 @@
-#ifndef Fallow_Logger_Hpp
+﻿#ifndef Fallow_Logger_Hpp
 #define Fallow_Logger_Hpp
 
 #include <fmt/format.h>
@@ -10,33 +10,33 @@
 
 #define FALLOW_ASSERT(condition, message) static_assert(condition, (message) + #condition)
 
-namespace Tools
+namespace fallow
 {
-	namespace Logger {
+	namespace tools
+	{
 		enum class LogBehavior : std::size_t
 		{
 			LOG_TRACE = 0,
 			LOG_DEBUG = 1,
-			LOG_INFO = 2,
+			LOG_INFO  = 2,
 
 			LOG_WARNING = 3,
-			LOG_ERROR = 4,
-			LOG_FATAL = 5,
+			LOG_ERROR   = 4,
+			LOG_FATAL   = 5,
 
 			LOG_SIZE = 6,
 		};
 
-		template <typename... InputTypes>
 		class FallowLogging
 		{
 		public:
-			FallowLogging(std::size_t logLevel, InputTypes... args)
+			FallowLogging(std::size_t logLevel)
 			{
 				// clang-format offer
-#ifdef NDEBUG 
+#ifdef NDEBUG
 				FALLOW_ASSERT(logLevel < 0 ? false : true);
 #endif // NDEBUG
-				// clang-format on
+       // clang-format on
 			}
 
 		private:
@@ -49,38 +49,57 @@ namespace Tools
 			{
 				return static_cast<std::underlying_type_t<Enumeration>>(value);
 			}
-
-
 			constexpr auto formaterCMD(const LogBehavior logLevel, const std::string& message)
 			{
-				std::string formatedString = std::move(
-					fmt::format("{}{}{}", logLevelNames[logLevel], logLevelsPatterns[as_integer(logLevel)], message));
+				std::string formatedString = std::move(fmt::format(
+				  "{}{}{}", logLevelNames[logLevel], logLevelsPatterns[as_integer(logLevel)].first, message));
+			}
+
+			constexpr auto formaterJson(const LogBehavior logLevel, const std::string& message)
+			{
+				std::string formatedString = std::move(fmt::format(
+				  "{}{}{}", logLevelNames[logLevel], logLevelsPatterns[as_integer(logLevel)].second, message));
 			}
 
 
 		public:
 			std::map<LogBehavior, std::string> logLevelNames = {
 			  {LogBehavior::LOG_TRACE,   std::string("[TRACE]")  },
-			  {LogBehavior::LOG_DEBUG,   std::string("[DEBUG]")  },
+              {LogBehavior::LOG_DEBUG,   std::string("[DEBUG]")  },
 			  {LogBehavior::LOG_INFO,    std::string("[INFO]")   },
-			  {LogBehavior::LOG_WARNING, std::string("[WARNING]")},
+              {LogBehavior::LOG_WARNING, std::string("[WARNING]")},
 			  {LogBehavior::LOG_ERROR,   std::string("[ERROR]")  },
-			  {LogBehavior::LOG_FATAL,   std::string("[FATAL]")  },
+              {LogBehavior::LOG_FATAL,   std::string("[FATAL]")  },
 			};
 
 
-			// clang-format off
-			static constexpr std::array logLevelsPatterns = {
-				std::string("(%D %T): %v"),
-				std::string("(%D %T): %v"),
-				std::string("(%D %T): %v"),
-				std::string("(%D %T): %v"),
-				std::string("(%D %T): %v"),
-				std::string("(%D %T): %v"),
-			};
-			// clang-format on
+			constexpr std::array logLevelsPatterns = {
+			  // Trace
+			  std::pair(std::string("(%D %T): %v"),
+			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
+			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
+			  // Debug
+			  std::pair(std::string("(%D %T): %v"),
+			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
+			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
+			  // Info
+			  std::pair(std::string("(%D %T): %v"),
+			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
+			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
+			  // Warning
+			  std::pair(std::string("(%D %T): %v"),
+			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
+			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
+			  // Error
+			  std::pair(std::string("(%D %T): %v"),
+			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
+			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
+			  // Fatal
+			  std::pair(std::string("(%D %T): %v"),
+			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
+			                        "\"Thread №\": %t, \"Message\": \"%v\"},"))};
 		};
-	} // namespace Logger
-} // namespace Tools
-
-#endif //Fallow_Logger_Hpp
+	};
+	} // namespace tools
+} // namespace fallow
+#endif // Fallow_Logger_Hpp

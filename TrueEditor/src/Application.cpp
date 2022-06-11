@@ -4,7 +4,7 @@
 int main()
 {
 	std::cout << "Is Work!" << '\n';
-	TrueEngine::Platform::Window window{};
+	fallow::platform::Window window{};
 
 	window.CreateWindow();
 }

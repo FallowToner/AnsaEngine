@@ -3,13 +3,13 @@
 
 #include "WindowState.hpp"
 
-namespace TrueEngine
+namespace fallow
 {
-	namespace Platform
+	namespace core
 	{
 		/**
 		 * @brief Wrapper for GLFW window and callback functions.
-		 * @ingroup Platform
+		 * @ingroup platform
 		 */
 		class Window
 		{
@@ -26,7 +26,7 @@ namespace TrueEngine
 			GLFWwindow* mWindowHandle;
 			WindowState mCurrentState{};
 		};
-	} // namespace Platform
+	} // namespace platform
 } // namespace TrueEngine
 
 #endif // Window_hpp
