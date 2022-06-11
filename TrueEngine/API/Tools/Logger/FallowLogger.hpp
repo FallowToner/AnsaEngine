@@ -52,13 +52,13 @@ namespace fallow
 			constexpr auto formaterCMD(const LogBehavior logLevel, const std::string& message)
 			{
 				std::string formatedString = std::move(fmt::format(
-				  "{}{}{}", logLevelNames[logLevel], logLevelsPatterns[as_integer(logLevel)].first, message));
+				  "{}{}{}", logLevelNames[logLevel], logPatterns.first, message));
 			}
 
 			constexpr auto formaterJson(const LogBehavior logLevel, const std::string& message)
 			{
 				std::string formatedString = std::move(fmt::format(
-				  "{}{}{}", logLevelNames[logLevel], logLevelsPatterns[as_integer(logLevel)].second, message));
+				  "{}{}{}", logLevelNames[logLevel], logPatterns.second, message));
 			}
 
 
@@ -72,34 +72,14 @@ namespace fallow
               {LogBehavior::LOG_FATAL,   std::string("[FATAL]")  },
 			};
 
-
-			constexpr std::array logLevelsPatterns = {
-			  // Trace
-			  std::pair(std::string("(%D %T): %v"),
-			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
-			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
-			  // Debug
-			  std::pair(std::string("(%D %T): %v"),
-			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
-			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
-			  // Info
-			  std::pair(std::string("(%D %T): %v"),
-			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
-			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
-			  // Warning
-			  std::pair(std::string("(%D %T): %v"),
-			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
-			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
-			  // Error
-			  std::pair(std::string("(%D %T): %v"),
-			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
-			                        "\"Thread №\": %t, \"Message\": \"%v\"},")),
-			  // Fatal
-			  std::pair(std::string("(%D %T): %v"),
-			            std::string("{\"Time\": \"%D%T\", \"LoggerIdentification\": \"%n\", \"ProcessID\": %P, "
-			                        "\"Thread №\": %t, \"Message\": \"%v\"},"))};
+			// clang-format off
+			static std::pair<std::string, std::string> logPatterns = {
+				"(%D %T): %v",
+				"{\"time\": \"%Y-%m-%dT%H:%M:%S.%f%z\", \"name\": \"%n\", \"level\": \"%^%l%$\", \"process\": %P, \"thread\": %t, \"message\": \"%v\"},"
+			};
 		};
+			//clang-format on
 	};
-	} // namespace tools
+} // namespace tools
 } // namespace fallow
 #endif // Fallow_Logger_Hpp
