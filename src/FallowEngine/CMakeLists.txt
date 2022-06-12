@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
-project(TrueEngine CXX)
+project(FallowEngine CXX)
+
+
+set(CMAKE_TOOLCHAIN_FILE "C:\\Tools\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
+
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -8,24 +12,23 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-#set(CMAKE_CXX_FLAGS )
+set(ENGINE_SOURCES
+        #----Modules--------files
+        #==========================
+        Modules/Audio/AudioManager.cpp
+		#==========================
+        Modules/IO/Keyboard.cpp
+        Modules/IO/InputManager.cpp
+        #==========================
 
-set(SOURCES
-        #----Audio--------files
-        src/Audio/AudioManager.cpp
+        #----Core------files
+		#==========================
+        Core/Window/Window.cpp
+        Core/Window/WindowState.cpp
+        #==========================
+)
 
-        #---Platform------files
-        src/Platform/Window/Window.cpp
-        src/Platform/Window/WindowState.cpp
-        #---------------------
-
-        #---IO------------files
-        src/IO/Keyboard.cpp
-        API/IO/InputManager.cpp API/IO/InputManager.h
-        )
-#--------------------
-
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
+add_library(${PROJECT_NAME} STATIC ${ENGINE_SOURCES})
 
 find_package(glfw3 CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
@@ -53,7 +56,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
         PUBLIC glm::glm
         PRIVATE
-        GL
+        #GL
         GLEW::GLEW
         glfw
         fmt::fmt

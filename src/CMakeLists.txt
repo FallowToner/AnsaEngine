@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION ${CMAKE_VER})
+cmake_minimum_required(VERSION 3.16})
+project(EngineDevelopment)
 
-#add_subdirectory(TrueEditor)
-#add_subdirectory(TrueEngine)
+add_subdirectory(FallowEditor)
+add_subdirectory(FallowEngine)
