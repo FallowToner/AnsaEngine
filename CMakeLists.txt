@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.16)
+set(CMAKE_VER 3.16)
+cmake_minimum_required(VERSION ${CMAKE_VER})
 
 set(CMAKE_CXX_STANDARD 20)
 set(EXTERN_DIR ${CMAKE_CURRENT_SOURCE_DIR}/extern)
