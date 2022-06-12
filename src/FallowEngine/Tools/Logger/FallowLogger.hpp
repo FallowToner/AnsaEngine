@@ -51,14 +51,16 @@ namespace fallow
 			}
 			constexpr auto formaterCMD(const LogBehavior logLevel, const std::string& message)
 			{
-				std::string formatedString = std::move(fmt::format(
-				  "{}{}{}", logLevelNames[logLevel], logPatterns.first, message));
+				std::string formatedString =
+				  std::move(fmt::format("{}{}{}", logLevelNames[logLevel], logPatterns.first, message));
+				return formatedString;
 			}
 
 			constexpr auto formaterJson(const LogBehavior logLevel, const std::string& message)
 			{
-				std::string formatedString = std::move(fmt::format(
-				  "{}{}{}", logLevelNames[logLevel], logPatterns.second, message));
+				std::string formatedString =
+				  std::move(fmt::format("{}{}{}", logLevelNames[logLevel], logPatterns.second, message));
+				return formatedString;
 			}
 
 
@@ -75,7 +77,7 @@ namespace fallow
 			// clang-format off
 			static std::pair<std::string, std::string> logPatterns = {
 				"(%D %T): %v",
-				"{\"time\": \"%Y-%m-%dT%H:%M:%S.%f%z\", \"name\": \"%n\", \"level\": \"%^%l%$\", \"process\": %P, \"thread\": %t, \"message\": \"%v\"},"
+				"{\"Date-Time\": \"%D%T\", \"ProcessID\": %P, \"Thread №\": %t, \"Message\": \"%v\"},"
 			};
 		};
 			//clang-format on

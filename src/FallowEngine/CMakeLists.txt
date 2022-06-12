@@ -12,14 +12,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(SOURCES
+set(ENGINE_SOURCES
         #----Modules--------files
         #==========================
         Modules/Audio/AudioManager.cpp
 		#==========================
         Modules/IO/Keyboard.cpp
         Modules/IO/InputManager.cpp
-        Modules/IO/InputManager.h
         #==========================
 
         #----Core------files
@@ -27,10 +26,9 @@ set(SOURCES
         Core/Window/Window.cpp
         Core/Window/WindowState.cpp
         #==========================
-        )
-#--------------------
+)
 
-add_library(${PROJECT_NAME} STATIC ${SOURCES})
+add_library(${PROJECT_NAME} STATIC ${ENGINE_SOURCES})
 
 find_package(glfw3 CONFIG REQUIRED)
 find_package(GLEW REQUIRED)
@@ -58,7 +56,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
         PUBLIC glm::glm
         PRIVATE
-        GL
+        #GL
         GLEW::GLEW
         glfw
         fmt::fmt

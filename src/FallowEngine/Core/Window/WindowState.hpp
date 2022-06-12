@@ -1,13 +1,15 @@
 #ifndef Window_Data_Hpp
 #define Window_Data_Hpp
 
+#include <gl/glew.h>
+//
 #include <GLFW/glfw3.h>
 
 #include <string>
 
 namespace fallow
 {
-	namespace platform
+	namespace core
 	{
 		class WindowState
 		{
@@ -25,14 +27,14 @@ namespace fallow
 
 			WindowState& getWindowState();
 
-			int                       getWidth() const;
-			int                       getHight() const;
-			std::string               getTitle() const;
-			GLFWmonitor*              getMonitor() const;
-			[[nodiscard]] GLFWwindow* getShareWindow() const;
+			int                        getWidth() const;
+			int                        getHeight() const;
+			std::string                getTitle() const;
+			[[nodiscard]] GLFWmonitor* getMonitor() const;
+			[[nodiscard]] GLFWwindow*  getShareWindow() const;
 
 			void setWidth(int width);
-			void setHight(int hight);
+			void setHeight(int height);
 			void setTitle(std::string title);
 			void setMonitor(GLFWmonitor* monitor);
 			void setShareWindow(GLFWwindow* shareWindow);
@@ -44,6 +46,6 @@ namespace fallow
 			GLFWmonitor* mMonitor{};
 			GLFWwindow*  mShareWindow{};
 		};
-	} // namespace platform
+	} // namespace core
 } // namespace fallow
 #endif // Window_Data_Hpp
