@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION ${CMAKE_VER})
 project(FallowEngine CXX)
 
-
-set(CMAKE_TOOLCHAIN_FILE "C:\\Tools\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
-
+if(WIN32 OR MSVC)
+        set(CMAKE_TOOLCHAIN_FILE "C:\\Tools\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
+endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -46,6 +46,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 #----INCLUDE_LIBRARIES--DIRECTORIES----
 target_include_directories(${PROJECT_NAME}
         PUBLIC
+        ${GLEW_INCLUDE_DIRS}
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         PRIVATE
