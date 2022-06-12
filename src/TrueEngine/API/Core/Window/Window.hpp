@@ -1,24 +1,24 @@
 #ifndef Window_hpp
 #define Window_hpp
 
-#include <gl/glew.h>
-
 #include "WindowState.hpp"
-//
-#include <GLFW/glfw3.h>
 
 namespace fallow
 {
 	namespace core
 	{
+		/**
+		 * @brief Wrapper for GLFW window and callback functions.
+		 * @ingroup platform
+		 */
 		class Window
 		{
 		public:
-			Window(int width, int height, std::string title, GLFWmonitor* monitor, GLFWwindow* shareWindow);
+			Window(int width, int hight, std::string title, GLFWmonitor* monitor, GLFWwindow* shareWindow);
 			virtual ~Window();
 
 			Window(const Window&) = delete;
-			Window(Window&&)      = delete;
+			Window(Window&&) = delete;
 			Window& operator=(const Window&) = delete;
 			Window& operator=(Window&&) = delete;
 
@@ -26,7 +26,7 @@ namespace fallow
 			GLFWwindow* mWindowHandle;
 			WindowState mCurrentState{};
 		};
-	} // namespace core
-} // namespace fallow
+	} // namespace platform
+} // namespace TrueEngine
 
 #endif // Window_hpp

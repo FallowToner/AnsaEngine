@@ -1,9 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(FallowEngine CXX)
-
-
-set(CMAKE_TOOLCHAIN_FILE "C:\\Tools\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
-
+project(TrueEngine CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,21 +8,20 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(SOURCES
-        #----Modules--------files
-        #==========================
-        Modules/Audio/AudioManager.cpp
-		#==========================
-        Modules/IO/Keyboard.cpp
-        Modules/IO/InputManager.cpp
-        Modules/IO/InputManager.h
-        #==========================
+#set(CMAKE_CXX_FLAGS )
 
-        #----Core------files
-		#==========================
-        Core/Window/Window.cpp
-        Core/Window/WindowState.cpp
-        #==========================
+set(SOURCES
+        #----Audio--------files
+        src/Audio/AudioManager.cpp
+
+        #---Platform------files
+        src/Platform/Window/Window.cpp
+        src/Platform/Window/WindowState.cpp
+        #---------------------
+
+        #---IO------------files
+        src/IO/Keyboard.cpp
+        API/IO/InputManager.cpp API/IO/InputManager.h
         )
 #--------------------
 
