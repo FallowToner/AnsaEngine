@@ -16,13 +16,13 @@ set(ENGINE_SOURCES
         #----Modules--------files
         #==========================
         Modules/Audio/AudioManager.cpp
-		#==========================
+	#==========================
         Modules/IO/Keyboard.cpp
         Modules/IO/InputManager.cpp
         #==========================
 
         #----Core------files
-		#==========================
+	#==========================
         Core/Window/Window.cpp
         Core/Window/WindowState.cpp
         #==========================
@@ -30,18 +30,20 @@ set(ENGINE_SOURCES
 
 add_library(${PROJECT_NAME} STATIC ${ENGINE_SOURCES})
 
-find_package(glfw3 CONFIG REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(fmt CONFIG REQUIRED)
-find_package(glm CONFIG REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
+include(FindOpenGL)
+include(FindGLEW)
+
+find_package(glfw3 REQUIRED)
+find_package(glm REQUIRED)
+find_package(fmt REQUIRED)
+find_package(spdlog REQUIRED)
 
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-        INTERFACE_INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/
-        )
+       INTERFACE_INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}
+       ${CMAKE_CURRENT_SOURCE_DIR}/include
+       ${CMAKE_CURRENT_SOURCE_DIR}/
+       )
 
 #----INCLUDE_LIBRARIES--DIRECTORIES----
 target_include_directories(${PROJECT_NAME}
@@ -52,14 +54,13 @@ target_include_directories(${PROJECT_NAME}
         PRIVATE
         )
 #--------------------------------------
-
 #----LINK_LIBRARIES--------------------
 target_link_libraries(${PROJECT_NAME}
         PUBLIC glm::glm
-        PRIVATE
         #GL
-        GLEW::GLEW
+        OpenGL::GL
         glfw
+        GLEW::glew
         fmt::fmt
         spdlog::spdlog spdlog::spdlog_header_only
         )

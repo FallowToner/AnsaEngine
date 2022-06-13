@@ -1,8 +1,12 @@
 #ifndef Window_Data_Hpp
 #define Window_Data_Hpp
 
-#include <gl/glew.h>
-//
+#ifdef WIN32
+	#include <gl/glew.h>
+#else
+	#include <GL/glew.h>
+#endif
+
 #include <GLFW/glfw3.h>
 
 #include <string>

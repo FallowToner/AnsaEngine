@@ -1,7 +1,11 @@
 #ifndef Window_hpp
 #define Window_hpp
 
-#include <gl/glew.h>
+#ifdef WIN32
+	#include <gl/glew.h>
+#else
+	#include <GL/glew.h>
+#endif
 
 #include "WindowState.hpp"
 //
