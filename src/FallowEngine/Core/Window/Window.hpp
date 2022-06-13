@@ -18,7 +18,11 @@ namespace fallow
 		class Window
 		{
 		public:
-			Window(int width, int height, std::string title, GLFWmonitor* monitor, GLFWwindow* shareWindow);
+			Window(int width,
+				   int height,
+				   std::string title,
+				   GLFWmonitor* monitor,
+				   GLFWwindow* shareWindow);
 			virtual ~Window();
 
 			Window(const Window&) = delete;

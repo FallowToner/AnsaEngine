@@ -44,11 +44,11 @@ namespace fallow
 			void setShareWindow(GLFWwindow* shareWindow);
 
 		private:
-			int          mWidth{};
-			int          mHeight{};
-			std::string  mTitle{};
-			GLFWmonitor* mMonitor{};
-			GLFWwindow*  mShareWindow{};
+			int          mWidth;
+			int          mHeight;
+			std::string  mTitle;
+			GLFWmonitor* mMonitor;
+			GLFWwindow*  mShareWindow;
 		};
 	} // namespace core
 } // namespace fallow

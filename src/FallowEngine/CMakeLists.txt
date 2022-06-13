@@ -23,21 +23,18 @@ set(ENGINE_SOURCES
 
         #----Core------files
 	#==========================
-        Core/Window/Window.cpp
-        Core/Window/WindowState.cpp
         #==========================
 )
 
-add_library(${PROJECT_NAME} STATIC ${ENGINE_SOURCES})
 
-include(FindOpenGL)
-include(FindGLEW)
+add_subdirectory(Core)
 
-find_package(glfw3 REQUIRED)
+
 find_package(glm REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
 
+add_library(${PROJECT_NAME} ${ENGINE_SOURCES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
        INTERFACE_INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}
@@ -48,7 +45,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 #----INCLUDE_LIBRARIES--DIRECTORIES----
 target_include_directories(${PROJECT_NAME}
         PUBLIC
-        ${GLEW_INCLUDE_DIRS}
         $<INSTALL_INTERFACE:include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         PRIVATE
@@ -56,11 +52,9 @@ target_include_directories(${PROJECT_NAME}
 #--------------------------------------
 #----LINK_LIBRARIES--------------------
 target_link_libraries(${PROJECT_NAME}
-        PUBLIC glm::glm
-        #GL
-        OpenGL::GL
-        glfw
-        GLEW::glew
+        PUBLIC
+        WindowModule
+        glm::glm
         fmt::fmt
         spdlog::spdlog spdlog::spdlog_header_only
         )
