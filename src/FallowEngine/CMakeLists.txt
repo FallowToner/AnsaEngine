@@ -54,6 +54,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
         WindowModule
+        FallowAllocator
         glm::glm
         fmt::fmt
         spdlog::spdlog spdlog::spdlog_header_only
