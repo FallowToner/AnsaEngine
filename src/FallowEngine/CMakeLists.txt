@@ -12,27 +12,18 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(ENGINE_SOURCES
-        #----Modules--------files
-        #==========================
-        Modules/Audio/AudioManager.cpp
-	#==========================
-        Modules/IO/Keyboard.cpp
-        Modules/IO/InputManager.cpp
-        #==========================
-
-        #----Core------files
-	#==========================
-        #==========================
-)
-
-
 add_subdirectory(Core)
+add_subdirectory(Modules)
+add_subdirectory(Tools)
 
 
 find_package(glm REQUIRED)
 find_package(fmt REQUIRED)
 find_package(spdlog REQUIRED)
+
+set(ENGINE_SOURCES
+      EntryPoint/Entrypoint.cpp
+)
 
 add_library(${PROJECT_NAME} ${ENGINE_SOURCES})
 
@@ -53,10 +44,20 @@ target_include_directories(${PROJECT_NAME}
 #----LINK_LIBRARIES--------------------
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
+        #Core
         WindowModule
         FallowAllocator
+
+        #Tools
+        FallowLogger
+
+        # Modules
+        FallowIO
+        FallowAudio
+
         glm::glm
         fmt::fmt
-        spdlog::spdlog spdlog::spdlog_header_only
+        spdlog::spdlog
+        spdlog::spdlog_header_only
         )
 #--------------------------------------
