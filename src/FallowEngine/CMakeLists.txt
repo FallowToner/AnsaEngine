@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION ${CMAKE_VER})
 project(FallowEngine CXX)
 
-
-set(CMAKE_TOOLCHAIN_FILE "C:\\Tools\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
-
+if(WIN32 OR MSVC)
+        set(CMAKE_TOOLCHAIN_FILE "C:\\Tools\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
+endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,32 +16,31 @@ set(ENGINE_SOURCES
         #----Modules--------files
         #==========================
         Modules/Audio/AudioManager.cpp
-		#==========================
+	#==========================
         Modules/IO/Keyboard.cpp
         Modules/IO/InputManager.cpp
         #==========================
 
         #----Core------files
-		#==========================
-        Core/Window/Window.cpp
-        Core/Window/WindowState.cpp
+	#==========================
         #==========================
 )
 
-add_library(${PROJECT_NAME} STATIC ${ENGINE_SOURCES})
 
-find_package(glfw3 CONFIG REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(fmt CONFIG REQUIRED)
-find_package(glm CONFIG REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
+add_subdirectory(Core)
 
+
+find_package(glm REQUIRED)
+find_package(fmt REQUIRED)
+find_package(spdlog REQUIRED)
+
+add_library(${PROJECT_NAME} ${ENGINE_SOURCES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-        INTERFACE_INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        ${CMAKE_CURRENT_SOURCE_DIR}/
-        )
+       INTERFACE_INCLUDE_DIRECTORIES ${PROJECT_SOURCE_DIR}
+       ${CMAKE_CURRENT_SOURCE_DIR}/include
+       ${CMAKE_CURRENT_SOURCE_DIR}/
+       )
 
 #----INCLUDE_LIBRARIES--DIRECTORIES----
 target_include_directories(${PROJECT_NAME}
@@ -51,14 +50,12 @@ target_include_directories(${PROJECT_NAME}
         PRIVATE
         )
 #--------------------------------------
-
 #----LINK_LIBRARIES--------------------
 target_link_libraries(${PROJECT_NAME}
-        PUBLIC glm::glm
-        PRIVATE
-        #GL
-        GLEW::GLEW
-        glfw
+        PUBLIC
+        WindowModule
+        FallowAllocator
+        glm::glm
         fmt::fmt
         spdlog::spdlog spdlog::spdlog_header_only
         )

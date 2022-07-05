@@ -1,7 +1,7 @@
 #ifndef Input_Manager_Hpp
 #define Input_Manager_Hpp
 
-namespace fellow
+namespace fallow
 {
 	namespace modules
 	{
@@ -9,6 +9,6 @@ namespace fellow
 		{
 		};
 	} // namespace modules
-} // namespace fellow
+} // namespace fallow
 
 #endif // Input_Manager_Hpp

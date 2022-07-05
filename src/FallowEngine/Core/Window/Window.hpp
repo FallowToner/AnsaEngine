@@ -1,7 +1,11 @@
 #ifndef Window_hpp
 #define Window_hpp
 
-#include <gl/glew.h>
+#ifdef WIN32
+	#include <gl/glew.h>
+#else
+	#include <GL/glew.h>
+#endif
 
 #include "WindowState.hpp"
 //
@@ -14,7 +18,11 @@ namespace fallow
 		class Window
 		{
 		public:
-			Window(int width, int height, std::string title, GLFWmonitor* monitor, GLFWwindow* shareWindow);
+			Window(int width,
+				   int height,
+				   std::string title,
+				   GLFWmonitor* monitor,
+				   GLFWwindow* shareWindow);
 			virtual ~Window();
 
 			Window(const Window&) = delete;
