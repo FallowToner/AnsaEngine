@@ -1,7 +1,7 @@
 #ifndef Keyboard_Hpp
 #define Keyboard_Hpp
 
-namespace fellow
+namespace fallow
 {
 	namespace modules
 	{
@@ -11,6 +11,6 @@ namespace fellow
 		private:
 		};
 	} // namespace modules
-} // namespace fellow
+} // namespace fallow
 
 #endif // Keyboard_Hpp
