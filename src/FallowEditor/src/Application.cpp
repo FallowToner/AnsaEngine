@@ -3,6 +3,7 @@
 
 int main()
 {
-	std::cout << "Is Work!" << '\n';
-	fallow::core::Window window{ 500,600,"Hello",nullptr,nullptr };
+	fallow::core::Window window(500, 600,"hello",nullptr,nullptr);
+	fallow::math::Matrix<2, 2> matrix(5);
+	//std::cout << matrix;
 }
