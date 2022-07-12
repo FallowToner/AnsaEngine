@@ -7,6 +7,10 @@
 #include <iostream>
 #include <vector>
 
+#ifdef NDEBUG
+#define NDEBUG
+#endif // NDEBUG
+
 
 namespace fallow
 {
@@ -17,8 +21,10 @@ namespace fallow
 		class Matrix
 		{
 		public:
-			Matrix() { dataMatrix = {}; }
-
+			Matrix()
+			{ 
+				dataMatrix={};
+			}
 			explicit Matrix(const T& value)
 			{
 				for (std::size_t row = 0; row < Rows; ++row)
@@ -29,8 +35,7 @@ namespace fallow
 					}
 				}
 			}
-
-			template <typename... Args, class = std::enable_if_t<sizeof...(Args) != 1>>
+			template <typename... Args> requires ( sizeof...(Args) == Rows * Columns)
 			Matrix(Args&&... args)
 			{
 				static_assert(sizeof...(args) == Rows * Columns);
@@ -45,9 +50,27 @@ namespace fallow
 				}
 			}
 
+			Matrix(const Matrix& rhs)
+			{
+				dataMatrix = rhs.dataMatrix;
+			}
+			Matrix(Matrix&& rhs)
+			{
+				dataMatrix = std::move(rhs.dataMatrix);
+			}
+			Matrix& operator=(const Matrix& rhs)
+			{
+				assert(*this == rhs);
+				dataMatrix = rhs.dataMatrix;
+			}
+			Matrix& operator=(Matrix&& rhs)
+			{
+				dataMatrix = std::move(rhs.dataMatrix);
+			}
+
 			Matrix& operator+=(const Matrix& rhs)
 			{
-				assert(this == rhs);
+				assert(*this == rhs);
 				for (std::size_t row = 0; row < Rows; ++row)
 				{
 					for (std::size_t column = 0; column < Columns; ++column)
@@ -59,7 +82,7 @@ namespace fallow
 			}
 			Matrix& operator-=(const Matrix& rhs)
 			{
-				assert(this == rhs);
+				assert(*this == rhs);
 				for (std::size_t row = 0; row < Rows; ++row)
 				{
 					for (std::size_t column = 0; column < Columns; ++column)
@@ -69,27 +92,31 @@ namespace fallow
 				}
 				return *this;
 			}
-			Matrix& operator*=(const Matrix& rhs)
+			Matrix& operator*=(const Matrix& rhs) = delete;
+			Matrix& operator/=(const Matrix& rhs) = delete;
+
+			Matrix operator+(const Matrix& rhs)
 			{
-				assert(this == rhs);
-
-				return *this;
+				assert(*this == rhs);
+				Matrix result = std::move(*this);
+				result += rhs;
+				return result;
 			}
-			Matrix& operator/=(const Matrix& rhs)
+			Matrix operator-(const Matrix& rhs)
 			{
-				// TODO : Create function for transparent matrix and use it here.
-				// Because /= is not defined for mathematical matrix and
-				// That`s equal A * B^-1 .
-
-				// I think it should be like Matrix Transparent(const Matrix& rhs)
-				// We should return copy bcs we need some more flaxible usage in our /= or / operators
-				return *this;
+				assert(*this == rhs);
+				Matrix result = std::move(*this);
+				result -= rhs;
+				return result;
 			}
-
-			Matrix operator+(const Matrix& rhs) {}
-			Matrix operator-(const Matrix& rhs) {}
-			Matrix operator*(const Matrix& rhs) {}
-			Matrix operator/(const Matrix& rhs) {}
+			Matrix operator*(const Matrix& rhs)
+			{
+				// TODO : Create multiplication between two matrix;
+			}
+			Matrix operator/(const Matrix& rhs)
+			{
+				// TODO : Make function for transparent matrix and use it here.
+			}
 
 			bool operator==(const Matrix& rhs)
 			{
@@ -115,6 +142,7 @@ namespace fallow
 				return os;
 			}
 
+			virtual ~Matrix() = default;
 
 		public:
 			std::size_t getRowsCount() { return Rows; }
