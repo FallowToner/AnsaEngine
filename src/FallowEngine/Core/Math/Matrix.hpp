@@ -165,16 +165,14 @@ namespace fallow
 
 			static constexpr auto transparentMatrix(const Matrix& matrix)
 			{
-				Matrix<MatrixTraits_clear<decltype(matrix)>::columns, MatrixTraits_clear<decltype(matrix)>::rows>
-				  result{};
-				for (std::size_t row = 0; row < MatrixTraits_clear<decltype(matrix)>::rows; ++row)
+				Matrix<Columns, Rows, T> result{};
+				for (std::size_t row = 0; row < Rows; ++row)
 				{
-					for (std::size_t column = 0; column < MatrixTraits_clear<decltype(matrix)>::columns; ++column)
+					for (std::size_t column = 0; column < Columns; ++column)
 					{
 						result[column][row] = matrix[row][column];
 					}
 				}
-
 				return result;
 			}
 			constexpr auto setDiagonal(const T& value) requires(Rows == Columns)
@@ -191,15 +189,11 @@ namespace fallow
 			constexpr auto isZeroMatrix() { return dataMatrix.empty() ? true : false; }
 			constexpr auto subMatrix(const Matrix& matrix)
 			{
-				Matrix<MatrixTraits_clear<decltype(matrix)>::rows - 1,
-				       MatrixTraits_clear<decltype(matrix)::columns> - 1,
-				       MatrixTraits_clear<decltype(matrix)>::value_type>
-					result{};
+				Matrix < MatrixTraits_clear < Rows - 1, MatrixTraits_clear<Columns - 1, T> result{};
 
 				// TODO : Learn little bit theory about matrix
 			}
-			static constexpr auto determinant(const Matrix& matrix) requires(
-			  MatrixTraits_clear<decltype(matrix)>::columns == MatrixTraits_clear<decltype(matrix)>::rows)
+			static constexpr auto determinant(const Matrix& matrix) requires(Rows == Columns)
 			{
 				// TODO : At first solve the problem related subMatrix and after return on this.
 			}
