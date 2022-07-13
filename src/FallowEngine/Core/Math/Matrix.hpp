@@ -14,18 +14,16 @@
 #define NDEBUG
 #endif // NDEBUG
 
-
 namespace fallow
 {
 	namespace math
 	{
-
 		template <std::size_t Rows = 1, std::size_t Columns = 1, typename T = float>
 		requires std::is_arithmetic_v<T>
 		class Matrix
 		{
 		public:
-			Matrix() { dataMatrix = {}; }
+			Matrix() noexcept { dataMatrix = {}; }
 			explicit Matrix(const T& value)
 			{
 				for (std::size_t row = 0; row < Rows; ++row)
@@ -51,10 +49,10 @@ namespace fallow
 				}
 			}
 
-			Matrix(const Matrix& rhs) noexcept { dataMatrix = rhs.dataMatrix; }
-			Matrix(Matrix&& rhs) noexcept { dataMatrix = std::move(rhs.dataMatrix); }
-			Matrix& operator=(const Matrix& rhs) noexcept { dataMatrix = rhs.dataMatrix; }
-			Matrix& operator=(Matrix&& rhs) noexcept { dataMatrix = std::move(rhs.dataMatrix); }
+			Matrix(const Matrix& rhs) noexcept = default;
+			Matrix(Matrix&& rhs) noexcept      = default;
+			Matrix& operator=(const Matrix& rhs) noexcept = default;
+			Matrix& operator=(Matrix&& rhs) noexcept = default;
 
 			Matrix& operator+=(const Matrix& rhs)
 			{
@@ -96,17 +94,52 @@ namespace fallow
 				result += rhs;
 				return result;
 			}
+			Matrix operator+(const T& value)
+			{
+				for (std::size_t row = 0; row < Rows; ++row)
+				{
+					for (std::size_t column = 0; column < Columns; ++column)
+					{
+						dataMatrix[row][column] += value;
+					}
+				}
+				return *this;
+			}
+
 			Matrix operator-(const Matrix& rhs)
 			{
 				Matrix result = std::move(*this);
 				result -= rhs;
 				return result;
 			}
+			Matrix operator-(const T& value)
+			{
+				for (std::size_t row = 0; row < Rows; ++row)
+				{
+					for (std::size_t column = 0; column < Columns; ++column)
+					{
+						dataMatrix[row][column] -= value;
+					}
+				}
+				return *this;
+			}
+
 			Matrix operator*(const Matrix& rhs)
 			{
 				Matrix result = std::move(*this);
 				result *= rhs;
 				return result;
+			}
+			Matrix operator*(const T& value)
+			{
+				for (std::size_t row = 0; row < Rows; ++row)
+				{
+					for (std::size_t column = 0; column < Columns; ++column)
+					{
+						dataMatrix[row][column] *= value;
+					}
+				}
+				return *this;
 			}
 			template <std::size_t Rows, std::size_t Columns, typename T>
 			const auto operator*(const Matrix<Rows, Columns, T>& rhs)
@@ -119,6 +152,31 @@ namespace fallow
 				return result;
 			}
 
+			constexpr auto& operator[](std::size_t index)
+			{
+				assert(index < 0 || index < MatrixTraits_clear<decltype(*this)>::rows);
+				return dataMatrix[index];
+			}
+			constexpr auto& operator[](std::size_t index) const
+			{
+				assert(index < 0 || index < MatrixTraits_clear<decltype(*this)>::rows);
+				return dataMatrix[index];
+			}
+
+			static constexpr auto transparentMatrix(const Matrix& matrix)
+			{
+				Matrix<MatrixTraits_clear<decltype(matrix)>::columns, MatrixTraits_clear<decltype(matrix)>::rows>
+				  result{};
+				for (std::size_t row = 0; row < MatrixTraits_clear<decltype(matrix)>::rows; ++row)
+				{
+					for (std::size_t column = 0; column < MatrixTraits_clear<decltype(matrix)>::columns; ++column)
+					{
+						result[column][row] = matrix[row][column];
+					}
+				}
+
+				return result;
+			}
 
 			bool operator==(const Matrix&) const = default;
 
@@ -135,19 +193,11 @@ namespace fallow
 				return os;
 			}
 
-			virtual ~Matrix() = default;
-
-		public:
-			static constexpr std::size_t getRowsCount() { return Rows; }
-			static constexpr std::size_t getColumnsCount() { return Columns; }
-
 		private:
 			using matrix = std::array<std::array<T, Columns>, Rows>;
 			matrix dataMatrix;
 		};
-
 	} // namespace math
 } // namespace fallow
-
 
 #endif // Matrix_Hpp
