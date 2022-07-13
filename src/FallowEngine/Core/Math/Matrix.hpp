@@ -177,6 +177,32 @@ namespace fallow
 
 				return result;
 			}
+			constexpr auto setDiagonal(const T& value) requires(Rows == Columns)
+			{
+				for (std::size_t row = 0; row < Rows; ++row)
+				{
+					for (std::size_t column = 0; column < Columns; ++column)
+					{
+						if (row == column)
+							dataMatrix[row][column] = value;
+					}
+				}
+			}
+			constexpr auto isZeroMatrix() { return dataMatrix.empty() ? true : false; }
+			constexpr auto subMatrix(const Matrix& matrix)
+			{
+				Matrix<MatrixTraits_clear<decltype(matrix)>::rows - 1,
+				       MatrixTraits_clear<decltype(matrix)::columns> - 1,
+				       MatrixTraits_clear<decltype(matrix)>::value_type>
+					result{};
+
+				// TODO : Learn little bit theory about matrix
+			}
+			static constexpr auto determinant(const Matrix& matrix) requires(
+			  MatrixTraits_clear<decltype(matrix)>::columns == MatrixTraits_clear<decltype(matrix)>::rows)
+			{
+				// TODO : At first solve the problem related subMatrix and after return on this.
+			}
 
 			bool operator==(const Matrix&) const = default;
 
