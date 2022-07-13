@@ -2,11 +2,12 @@ cmake_minimum_required(VERSION ${CMAKE_VER})
 
 set(CMAKE_CXX_STANDARD_REQUIRED 20)
 
-add_library(FallowAllocator INTERFACE
+add_library(FallowMath INTERFACE
 			Matrix.hpp
-			)
+			MatrixTraits.hpp
+)
 
-set_target_properties(FallowAllocator PROPERTIES LINKER_LANGUAGE CXX)
+set_target_properties(FallowMath PROPERTIES LINKER_LANGUAGE CXX)
 
-target_include_directories(FallowAllocator INTERFACE)
-target_link_libraries(FallowAllocator INTERFACE )
+target_include_directories(FallowMath PRIVATE)
+target_link_libraries(FallowMath PRIVATE )

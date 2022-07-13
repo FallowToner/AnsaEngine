@@ -1,11 +1,14 @@
 #ifndef Matrix_Hpp
 #define Matrix_Hpp
 
-#include <algorithm>
+#include <array>
 #include <cassert>
 #include <cstdint>
 #include <iostream>
-#include <vector>
+#include <ostream>
+#include <type_traits>
+
+#include "MatrixTraits.hpp"
 
 #ifdef NDEBUG
 #define NDEBUG
@@ -18,13 +21,11 @@ namespace fallow
 	{
 
 		template <std::size_t Rows = 1, std::size_t Columns = 1, typename T = float>
+		requires std::is_arithmetic_v<T>
 		class Matrix
 		{
 		public:
-			Matrix()
-			{ 
-				dataMatrix={};
-			}
+			Matrix() { dataMatrix = {}; }
 			explicit Matrix(const T& value)
 			{
 				for (std::size_t row = 0; row < Rows; ++row)
@@ -35,8 +36,8 @@ namespace fallow
 					}
 				}
 			}
-			template <typename... Args> requires ( sizeof...(Args) == Rows * Columns)
-			Matrix(Args&&... args)
+			template <typename... Args>
+			requires(sizeof...(Args) == Rows * Columns) Matrix(Args&&... args)
 			{
 				static_assert(sizeof...(args) == Rows * Columns);
 				std::array            pack     = {args...};
@@ -50,27 +51,13 @@ namespace fallow
 				}
 			}
 
-			Matrix(const Matrix& rhs)
-			{
-				dataMatrix = rhs.dataMatrix;
-			}
-			Matrix(Matrix&& rhs)
-			{
-				dataMatrix = std::move(rhs.dataMatrix);
-			}
-			Matrix& operator=(const Matrix& rhs)
-			{
-				assert(*this == rhs);
-				dataMatrix = rhs.dataMatrix;
-			}
-			Matrix& operator=(Matrix&& rhs)
-			{
-				dataMatrix = std::move(rhs.dataMatrix);
-			}
+			Matrix(const Matrix& rhs) noexcept { dataMatrix = rhs.dataMatrix; }
+			Matrix(Matrix&& rhs) noexcept { dataMatrix = std::move(rhs.dataMatrix); }
+			Matrix& operator=(const Matrix& rhs) noexcept { dataMatrix = rhs.dataMatrix; }
+			Matrix& operator=(Matrix&& rhs) noexcept { dataMatrix = std::move(rhs.dataMatrix); }
 
 			Matrix& operator+=(const Matrix& rhs)
 			{
-				assert(*this == rhs);
 				for (std::size_t row = 0; row < Rows; ++row)
 				{
 					for (std::size_t column = 0; column < Columns; ++column)
@@ -82,7 +69,6 @@ namespace fallow
 			}
 			Matrix& operator-=(const Matrix& rhs)
 			{
-				assert(*this == rhs);
 				for (std::size_t row = 0; row < Rows; ++row)
 				{
 					for (std::size_t column = 0; column < Columns; ++column)
@@ -92,42 +78,49 @@ namespace fallow
 				}
 				return *this;
 			}
-			Matrix& operator*=(const Matrix& rhs) = delete;
-			Matrix& operator/=(const Matrix& rhs) = delete;
+			Matrix& operator*=(const Matrix& rhs)
+			{
+				for (std::size_t row = 0; row < Rows; ++row)
+				{
+					for (std::size_t column = 0; column < Columns; ++column)
+					{
+						dataMatrix[row][column] *= rhs.dataMatrix[row][column];
+					}
+				}
+				return *this;
+			}
 
 			Matrix operator+(const Matrix& rhs)
 			{
-				assert(*this == rhs);
 				Matrix result = std::move(*this);
 				result += rhs;
 				return result;
 			}
 			Matrix operator-(const Matrix& rhs)
 			{
-				assert(*this == rhs);
 				Matrix result = std::move(*this);
 				result -= rhs;
 				return result;
 			}
 			Matrix operator*(const Matrix& rhs)
 			{
-				// TODO : Create multiplication between two matrix;
+				Matrix result = std::move(*this);
+				result *= rhs;
+				return result;
 			}
-			Matrix operator/(const Matrix& rhs)
+			template <std::size_t Rows, std::size_t Columns, typename T>
+			const auto operator*(const Matrix<Rows, Columns, T>& rhs)
 			{
-				// TODO : Make function for transparent matrix and use it here.
+				bool isPossible = MatrixTraits_clear<decltype(*this)>::rows == Columns &&
+				                  std::is_same_v<MatrixTraits_clear<decltype(*this)>::value_type, T>;
+				assert(isPossible != true);
+				Matrix<MatrixTraits_clear<decltype(*this)>::rows, Columns, T> result{};
+
+				return result;
 			}
 
-			bool operator==(const Matrix& rhs)
-			{
-				std::size_t rowSize    = dataMatrix[0].size();
-				std::size_t columnSize = dataMatrix.size();
 
-				std::size_t rhsRowSize    = rhs.dataMatrix[0].size();
-				std::size_t rhsColumnSize = rhs.dataMatrix.size();
-
-				return (rowSize == rhsRowSize) && (columnSize == rhsColumnSize);
-			}
+			bool operator==(const Matrix&) const = default;
 
 			friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
 			{
@@ -145,11 +138,11 @@ namespace fallow
 			virtual ~Matrix() = default;
 
 		public:
-			std::size_t getRowsCount() { return Rows; }
-			std::size_t getColumnsCount() { return Columns; }
+			static constexpr std::size_t getRowsCount() { return Rows; }
+			static constexpr std::size_t getColumnsCount() { return Columns; }
 
 		private:
-			using matrix = std::array<std::array<T, Rows>, Columns>;
+			using matrix = std::array<std::array<T, Columns>, Rows>;
 			matrix dataMatrix;
 		};
 
