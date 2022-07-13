@@ -47,6 +47,7 @@ target_link_libraries(${PROJECT_NAME}
         #Core
         WindowModule
         FallowAllocator
+        FallowMath
 
         #Tools
         FallowLogger

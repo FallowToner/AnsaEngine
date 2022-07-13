@@ -11,7 +11,8 @@
 //--Memory
 #include <Core/MemoryManager/Allocator/StackAllocator.hpp>
 //--Math
-#include <Core/Math/Matrix2D.hpp>
+#include <Core/Math/Matrix.hpp>
+#include <Core/Math/MatrixTraits.hpp>
 
 
 //-------TOOLS------//
