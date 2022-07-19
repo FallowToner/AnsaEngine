@@ -124,10 +124,37 @@ namespace fallow
 				return *this;
 			}
 
+			template<std::size_t R, std::size_t C, typename Type>
+			Matrix<Rows, C, Type> operator*(const Matrix<R, C, Type>& rhs) requires (std::is_same_v<T, Type>&& Columns == R)
+			{
+				Matrix<Rows, C, Type> result{};
+				for (std::size_t row = 0; row < Rows; row++)
+				{
+					for (std::size_t col = 0; col < C; col++)
+					{
+						for (std::size_t inner = 0; inner < Columns; inner++)
+						{
+							result[row][col] += dataMatrix[row][inner] * rhs[inner][col];
+						}
+					}
+				}
+				return result;
+			}
+
 			Matrix operator*(const Matrix& rhs)
 			{
-				Matrix result = std::move(*this);
-				result *= rhs;
+				Matrix<Rows, Columns> result{};
+
+				for (std::size_t row = 0; row < Rows; row++)
+				{
+					for (std::size_t col = 0; col < Columns; col++)
+					{
+						for (std::size_t inner = 0; inner < Columns; inner++)
+						{
+							result[row][col] += dataMatrix[row][inner] * rhs[inner][col];
+						}
+					}
+				}
 				return result;
 			}
 			Matrix operator*(const T& value)
@@ -140,16 +167,6 @@ namespace fallow
 					}
 				}
 				return *this;
-			}
-			template <std::size_t Rows, std::size_t Columns, typename T>
-			const auto operator*(const Matrix<Rows, Columns, T>& rhs)
-			{
-				bool isPossible = MatrixTraits_clear<decltype(*this)>::rows == Columns &&
-				                  std::is_same_v<MatrixTraits_clear<decltype(*this)>::value_type, T>;
-				assert(isPossible != true);
-				Matrix<MatrixTraits_clear<decltype(*this)>::rows, Columns, T> result{};
-
-				return result;
 			}
 
 			constexpr auto& operator[](std::size_t index)
@@ -186,10 +203,10 @@ namespace fallow
 					}
 				}
 			}
-			constexpr auto isZeroMatrix() { return dataMatrix.empty() ? true : false; }
+			constexpr auto isZeroMatrix() { return dataMatrix.empty(); }
 			constexpr auto subMatrix(const Matrix& matrix)
 			{
-				Matrix < MatrixTraits_clear < Rows - 1, MatrixTraits_clear<Columns - 1, T> result{};
+				Matrix<Rows - 1, Columns - 1, T> result{};
 
 				// TODO : Learn little bit theory about matrix
 			}
