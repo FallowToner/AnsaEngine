@@ -8,7 +8,7 @@ set(PROJECT_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 enable_testing()
 include(GoogleTest)
 
-add_subdirectory(extern)
+#add_subdirectory(extern)
 add_subdirectory(src)
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
