@@ -3,8 +3,6 @@
 
 #include <array>
 #include <cassert>
-#include <cstdint>
-#include <iostream>
 #include <ostream>
 #include <type_traits>
 
@@ -124,8 +122,9 @@ namespace fallow
 				return *this;
 			}
 
-			template<std::size_t R, std::size_t C, typename Type>
-			Matrix<Rows, C, Type> operator*(const Matrix<R, C, Type>& rhs) requires (std::is_same_v<T, Type>&& Columns == R)
+			// clang-format off
+			template <std::size_t R, std::size_t C, typename Type>
+			Matrix<Rows, C, Type> operator*(const Matrix<R, C, Type>& rhs) requires(std::is_same_v<T, Type>&& Columns == R)
 			{
 				Matrix<Rows, C, Type> result{};
 				for (std::size_t row = 0; row < Rows; row++)
@@ -140,6 +139,7 @@ namespace fallow
 				}
 				return result;
 			}
+			// clang-format on
 
 			Matrix operator*(const Matrix& rhs)
 			{
@@ -210,9 +210,62 @@ namespace fallow
 
 				// TODO : Learn little bit theory about matrix
 			}
-			static constexpr auto determinant(const Matrix& matrix) requires(Rows == Columns)
+
+			static constexpr auto determinant(Matrix& matrix) requires(Rows == Columns)
 			{
-				// TODO : At first solve the problem related subMatrix and after return on this.
+				const double EPS = 1E-9;
+				double       det = 1;
+				for (int i = 0; i < Rows; ++i)
+				{
+					int k = i;
+					for (int j = i + 1; j < Rows; ++j)
+						if (std::abs(matrix[j][i]) > std::abs(matrix[k][i]))
+							k = j;
+					if (std::abs(matrix[k][i]) < EPS)
+					{
+						det = 0;
+						break;
+					}
+					std::swap(matrix[i], matrix[k]);
+					if (i != k)
+						det = -det;
+					det *= matrix[i][i];
+					for (int j = i + 1; j < Rows; ++j)
+						matrix[i][j] /= matrix[i][i];
+					for (int j = 0; j < Rows; ++j)
+						if (j != i && std::abs(matrix[j][i]) > EPS)
+							for (int k = i + 1; k < Rows; ++k)
+								matrix[j][k] -= matrix[i][k] * matrix[j][i];
+				}
+				return det;
+			}
+			constexpr auto determinant() requires(Rows == Columns)
+			{
+				const double EPS = 1E-9;
+				double       det = 1;
+				for (int i = 0; i < Rows; ++i)
+				{
+					int k = i;
+					for (int j = i + 1; j < Rows; ++j)
+						if (std::abs(dataMatrix[j][i]) > std::abs(dataMatrix[k][i]))
+							k = j;
+					if (std::abs(dataMatrix[k][i]) < EPS)
+					{
+						det = 0;
+						break;
+					}
+					std::swap(dataMatrix[i], dataMatrix[k]);
+					if (i != k)
+						det = -det;
+					det *= dataMatrix[i][i];
+					for (int j = i + 1; j < Rows; ++j)
+						dataMatrix[i][j] /= dataMatrix[i][i];
+					for (int j = 0; j < Rows; ++j)
+						if (j != i && std::abs(dataMatrix[j][i]) > EPS)
+							for (int k = i + 1; k < Rows; ++k)
+								dataMatrix[j][k] -= dataMatrix[i][k] * dataMatrix[j][i];
+				}
+				return det;
 			}
 
 			bool operator==(const Matrix&) const = default;

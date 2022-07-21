@@ -1,16 +1,20 @@
 #ifndef Random_Hpp
 #define Random_Hpp
 
+#include <cstdint>
+
 namespace fallow
 {
 	namespace math
 	{
-		class Generator
+		class RandomGenerator
 		{
-		};
-
-		class Random
-		{
+			RandomGenerator(std::int64_t seed_) : seed{ seed_ }
+			{
+				
+			}
+		private:
+			std::int64_t seed;
 		};
 	} // namespace math
 } // namespace fallow
