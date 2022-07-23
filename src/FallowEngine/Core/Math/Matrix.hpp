@@ -19,7 +19,7 @@ namespace fallow
 	namespace math
 	{
 		template <std::size_t Rows = 1, std::size_t Columns = 1, typename T = float>
-		requires std::is_arithmetic_v<T>
+		    requires std::is_arithmetic_v<T>
 		class Matrix
 		{
 		public:
@@ -35,7 +35,8 @@ namespace fallow
 				}
 			}
 			template <typename... Args>
-			requires(sizeof...(Args) == Rows * Columns) Matrix(Args&&... args)
+			    requires(sizeof...(Args) == Rows * Columns)
+			explicit Matrix(Args&&... args)
 			{
 				static_assert(sizeof...(args) == Rows * Columns);
 				std::array            pack     = {args...};
@@ -49,10 +50,10 @@ namespace fallow
 				}
 			}
 
-			Matrix(const Matrix& rhs) noexcept = default;
-			Matrix(Matrix&& rhs) noexcept      = default;
+			Matrix(const Matrix& rhs) noexcept            = default;
+			Matrix(Matrix&& rhs) noexcept                 = default;
 			Matrix& operator=(const Matrix& rhs) noexcept = default;
-			Matrix& operator=(Matrix&& rhs) noexcept = default;
+			Matrix& operator=(Matrix&& rhs) noexcept      = default;
 
 			Matrix& operator+=(const Matrix& rhs)
 			{
@@ -141,11 +142,11 @@ namespace fallow
 				}
 				return *this;
 			}
-			template <std::size_t Rows, std::size_t Columns, typename T>
-			const auto operator*(const Matrix<Rows, Columns, T>& rhs)
+			template <std::size_t R, std::size_t C, typename Type>
+			auto operator*(const Matrix<Rows, Columns, T>& rhs)
 			{
 				bool isPossible = MatrixTraits_clear<decltype(*this)>::rows == Columns &&
-				                  std::is_same_v<MatrixTraits_clear<decltype(*this)>::value_type, T>;
+				                  std::is_same_v<typename MatrixTraits_clear<decltype(*this)>::value_type, T>;
 				assert(isPossible != true);
 				Matrix<MatrixTraits_clear<decltype(*this)>::rows, Columns, T> result{};
 
@@ -177,7 +178,8 @@ namespace fallow
 
 				return result;
 			}
-			constexpr auto setDiagonal(const T& value) requires(Rows == Columns)
+			constexpr auto setDiagonal(const T& value)
+			    requires(Rows == Columns)
 			{
 				for (std::size_t row = 0; row < Rows; ++row)
 				{
@@ -188,18 +190,9 @@ namespace fallow
 					}
 				}
 			}
-			constexpr auto isZeroMatrix() { return dataMatrix.empty() ? true : false; }
-			constexpr auto subMatrix(const Matrix& matrix)
-			{
-				Matrix<MatrixTraits_clear<decltype(matrix)>::rows - 1,
-				       MatrixTraits_clear<decltype(matrix)::columns> - 1,
-				       MatrixTraits_clear<decltype(matrix)>::value_type>
-					result{};
-
-				// TODO : Learn little bit theory about matrix
-			}
-			static constexpr auto determinant(const Matrix& matrix) requires(
-			  MatrixTraits_clear<decltype(matrix)>::columns == MatrixTraits_clear<decltype(matrix)>::rows)
+			constexpr auto        isZeroMatrix() { return dataMatrix.empty(); }
+			static constexpr auto determinant(const Matrix& matrix)
+			    requires(MatrixTraits_clear<decltype(matrix)>::columns == MatrixTraits_clear<decltype(matrix)>::rows)
 			{
 				// TODO : At first solve the problem related subMatrix and after return on this.
 			}

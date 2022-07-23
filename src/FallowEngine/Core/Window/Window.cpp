@@ -1,11 +1,4 @@
 #include "Window.hpp"
-
-#ifdef WIN32
-	#include <gl/glew.h>
-#else
-	#include <GL/glew.h>
-#endif
-
 #include <spdlog/spdlog.h>
 
 namespace fallow

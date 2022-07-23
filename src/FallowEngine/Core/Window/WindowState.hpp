@@ -1,13 +1,16 @@
 #ifndef Window_Data_Hpp
 #define Window_Data_Hpp
 
+
+// clang-format off
 #ifdef WIN32
-	#include <gl/glew.h>
+	#include <GL/glew.h>
+	#include <GLFW/glfw3.h>
 #else
 	#include <GL/glew.h>
+	#include <GLFW/glfw3.h>
 #endif
-
-#include <GLFW/glfw3.h>
+// clang-format on
 
 #include <string>
 

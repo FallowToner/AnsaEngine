@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION ${CMAKE_VER})
 set(CMAKE_CXX_STANDARD_REQUIRED 20)
 
 add_library(FallowAllocator STATIC
+			Allocator.hpp
 			StackAllocator.hpp
 			StackAllocator.cpp)
 
