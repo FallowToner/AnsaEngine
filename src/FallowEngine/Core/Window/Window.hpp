@@ -2,8 +2,6 @@
 #define Window_hpp
 
 #include "WindowState.hpp"
-//
-#include <GLFW/glfw3.h>
 
 namespace fallow
 {

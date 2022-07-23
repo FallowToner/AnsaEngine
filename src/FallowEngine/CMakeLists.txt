@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION ${CMAKE_VER})
 project(FallowEngine CXX)
 
-if(WIN32 OR MSVC)
-        set(CMAKE_TOOLCHAIN_FILE "C:\\Tools\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
-endif()
-
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -15,11 +11,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_subdirectory(Core)
 add_subdirectory(Modules)
 add_subdirectory(Tools)
-
-
-find_package(glm REQUIRED)
-find_package(fmt REQUIRED)
-find_package(spdlog REQUIRED)
+add_subdirectory(Graphics)
 
 set(ENGINE_SOURCES
       EntryPoint/Entrypoint.cpp
@@ -56,9 +48,7 @@ target_link_libraries(${PROJECT_NAME}
         FallowIO
         FallowAudio
 
-        glm::glm
-        fmt::fmt
-        spdlog::spdlog
-        spdlog::spdlog_header_only
+        #Graphics
+        FallowGraphics
         )
 #--------------------------------------

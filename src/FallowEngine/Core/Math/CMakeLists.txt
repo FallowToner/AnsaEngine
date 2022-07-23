@@ -7,7 +7,7 @@ add_library(FallowMath INTERFACE
 			MatrixTraits.hpp
 )
 
-set_target_properties(FallowMath PROPERTIES LINKER_LANGUAGE CXX)
+#set_target_properties(FallowMath PROPERTIES LINKER_LANGUAGE CXX)
 
 target_include_directories(FallowMath PRIVATE)
 target_link_libraries(FallowMath PRIVATE )
