@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED 20)
 add_library(FallowMath INTERFACE
 			Matrix.hpp
 			MatrixTraits.hpp
+
+			Random.hpp
 )
 
 #set_target_properties(FallowMath PROPERTIES LINKER_LANGUAGE CXX)

@@ -3,8 +3,6 @@
 
 #include <array>
 #include <cassert>
-#include <cstdint>
-#include <iostream>
 #include <ostream>
 #include <type_traits>
 
@@ -125,10 +123,39 @@ namespace fallow
 				return *this;
 			}
 
+			// clang-format off
+			template <std::size_t R, std::size_t C, typename Type>
+			Matrix<Rows, C, Type> operator*(const Matrix<R, C, Type>& rhs) requires(std::is_same_v<T, Type>&& Columns == R)
+			{
+				Matrix<Rows, C, Type> result{};
+				for (std::size_t row = 0; row < Rows; row++)
+				{
+					for (std::size_t col = 0; col < C; col++)
+					{
+						for (std::size_t inner = 0; inner < Columns; inner++)
+						{
+							result[row][col] += dataMatrix[row][inner] * rhs[inner][col];
+						}
+					}
+				}
+				return result;
+			}
+			// clang-format on
+
 			Matrix operator*(const Matrix& rhs)
 			{
-				Matrix result = std::move(*this);
-				result *= rhs;
+				Matrix<Rows, Columns> result{};
+
+				for (std::size_t row = 0; row < Rows; row++)
+				{
+					for (std::size_t col = 0; col < Columns; col++)
+					{
+						for (std::size_t inner = 0; inner < Columns; inner++)
+						{
+							result[row][col] += dataMatrix[row][inner] * rhs[inner][col];
+						}
+					}
+				}
 				return result;
 			}
 			Matrix operator*(const T& value)
@@ -141,16 +168,6 @@ namespace fallow
 					}
 				}
 				return *this;
-			}
-			template <std::size_t R, std::size_t C, typename Type>
-			auto operator*(const Matrix<Rows, Columns, T>& rhs)
-			{
-				bool isPossible = MatrixTraits_clear<decltype(*this)>::rows == Columns &&
-				                  std::is_same_v<typename MatrixTraits_clear<decltype(*this)>::value_type, T>;
-				assert(isPossible != true);
-				Matrix<MatrixTraits_clear<decltype(*this)>::rows, Columns, T> result{};
-
-				return result;
 			}
 
 			constexpr auto& operator[](std::size_t index)
@@ -166,16 +183,14 @@ namespace fallow
 
 			static constexpr auto transparentMatrix(const Matrix& matrix)
 			{
-				Matrix<MatrixTraits_clear<decltype(matrix)>::columns, MatrixTraits_clear<decltype(matrix)>::rows>
-				  result{};
-				for (std::size_t row = 0; row < MatrixTraits_clear<decltype(matrix)>::rows; ++row)
+				Matrix<Columns, Rows, T> result{};
+				for (std::size_t row = 0; row < Rows; ++row)
 				{
-					for (std::size_t column = 0; column < MatrixTraits_clear<decltype(matrix)>::columns; ++column)
+					for (std::size_t column = 0; column < Columns; ++column)
 					{
 						result[column][row] = matrix[row][column];
 					}
 				}
-
 				return result;
 			}
 			constexpr auto setDiagonal(const T& value)
@@ -191,14 +206,35 @@ namespace fallow
 				}
 			}
 			constexpr auto        isZeroMatrix() { return dataMatrix.empty(); }
-			static constexpr auto determinant(const Matrix& matrix)
-			    requires(MatrixTraits_clear<decltype(matrix)>::columns == MatrixTraits_clear<decltype(matrix)>::rows)
+			static constexpr auto determinant(Matrix& matrix) requires(Rows == Columns)
 			{
-				// TODO : At first solve the problem related subMatrix and after return on this.
+				const double EPS = 1E-9;
+				double       det = 1;
+				for (int i = 0; i < Rows; ++i)
+				{
+					int k = i;
+					for (int j = i + 1; j < Rows; ++j)
+						if (std::abs(matrix[j][i]) > std::abs(matrix[k][i]))
+							k = j;
+					if (std::abs(matrix[k][i]) < EPS)
+					{
+						det = 0;
+						break;
+					}
+					std::swap(matrix[i], matrix[k]);
+					if (i != k)
+						det = -det;
+					det *= matrix[i][i];
+					for (int j = i + 1; j < Rows; ++j)
+						matrix[i][j] /= matrix[i][i];
+					for (int j = 0; j < Rows; ++j)
+						if (j != i && std::abs(matrix[j][i]) > EPS)
+							for (int k = i + 1; k < Rows; ++k)
+								matrix[j][k] -= matrix[i][k] * matrix[j][i];
+				}
+				return det;
 			}
-
 			bool operator==(const Matrix&) const = default;
-
 			friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
 			{
 				for (const auto& row : matrix.dataMatrix)
