@@ -23,16 +23,15 @@ namespace fallow
 		requires std::is_arithmetic_v<T>
 		class VBO final
 		{
-			VBO(GLuint id_, BufferType bufferType_, DrawType drawType_) : id{id_}, bufferType{bufferType_}, drawType{drawType_}
+			VBO(GLuint id_, BufferType bufferType_, DrawType drawType_) : id{id_}, bufferType{bufferType_}
 			{
 				glGenBuffers(1, &id);
 				bindBuffer(bufferType);
-				loadBuffer
 			}
 
 			void bindBuffer(BufferType bufferType) { glBindBuffer(as_integer(bufferType), id); }
 			void unbindBuffer() { glBindBuffer(drawType, 0); }
-			void loadBuffer(const T* buffer)
+			void loadBuffer(const T* buffer, DrawType drawingType)
 			{
 				drawType = drawingType;
 				glBufferData(as_integer(bufferType), sizeof(buffer), buffer, as_integer(drawingType));
