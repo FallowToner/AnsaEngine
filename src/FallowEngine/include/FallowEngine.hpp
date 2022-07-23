@@ -8,6 +8,7 @@
 //--Window
 #include <Core/Window/Window.hpp>
 #include <Core/Window/WindowState.hpp>
+#include <Core/Window/WindowTraits.hpp>
 //--Memory
 #include <Core/MemoryManager/Allocator/StackAllocator.hpp>
 //--Math
@@ -18,5 +19,10 @@
 #include <Tools/Logger/LogBehavior.hpp>
 #include <Tools/Logger/LogStyle.hpp>
 #include <Tools/Logger/Logging.hpp>
+
+//------GRAPHICS------//
+#include <Graphics/Buffers/VAO.hpp>
+#include <Graphics/Buffers/VBO.hpp>
+#include <Graphics/FallowAlias.hpp>
 
 #endif // Fallow_Engine_Hpp

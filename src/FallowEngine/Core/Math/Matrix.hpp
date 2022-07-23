@@ -17,7 +17,7 @@ namespace fallow
 	namespace math
 	{
 		template <std::size_t Rows = 1, std::size_t Columns = 1, typename T = float>
-		requires std::is_arithmetic_v<T>
+		    requires std::is_arithmetic_v<T>
 		class Matrix
 		{
 		public:
@@ -33,7 +33,8 @@ namespace fallow
 				}
 			}
 			template <typename... Args>
-			requires(sizeof...(Args) == Rows * Columns) Matrix(Args&&... args)
+			    requires(sizeof...(Args) == Rows * Columns)
+			explicit Matrix(Args&&... args)
 			{
 				static_assert(sizeof...(args) == Rows * Columns);
 				std::array            pack     = {args...};
@@ -47,10 +48,10 @@ namespace fallow
 				}
 			}
 
-			Matrix(const Matrix& rhs) noexcept = default;
-			Matrix(Matrix&& rhs) noexcept      = default;
+			Matrix(const Matrix& rhs) noexcept            = default;
+			Matrix(Matrix&& rhs) noexcept                 = default;
 			Matrix& operator=(const Matrix& rhs) noexcept = default;
-			Matrix& operator=(Matrix&& rhs) noexcept = default;
+			Matrix& operator=(Matrix&& rhs) noexcept      = default;
 
 			Matrix& operator+=(const Matrix& rhs)
 			{
@@ -192,7 +193,8 @@ namespace fallow
 				}
 				return result;
 			}
-			constexpr auto setDiagonal(const T& value) requires(Rows == Columns)
+			constexpr auto setDiagonal(const T& value)
+			    requires(Rows == Columns)
 			{
 				for (std::size_t row = 0; row < Rows; ++row)
 				{
@@ -203,14 +205,7 @@ namespace fallow
 					}
 				}
 			}
-			constexpr auto isZeroMatrix() { return dataMatrix.empty(); }
-			constexpr auto subMatrix(const Matrix& matrix)
-			{
-				Matrix<Rows - 1, Columns - 1, T> result{};
-
-				// TODO : Learn little bit theory about matrix
-			}
-
+			constexpr auto        isZeroMatrix() { return dataMatrix.empty(); }
 			static constexpr auto determinant(Matrix& matrix) requires(Rows == Columns)
 			{
 				const double EPS = 1E-9;
@@ -239,37 +234,7 @@ namespace fallow
 				}
 				return det;
 			}
-			constexpr auto determinant() requires(Rows == Columns)
-			{
-				const double EPS = 1E-9;
-				double       det = 1;
-				for (int i = 0; i < Rows; ++i)
-				{
-					int k = i;
-					for (int j = i + 1; j < Rows; ++j)
-						if (std::abs(dataMatrix[j][i]) > std::abs(dataMatrix[k][i]))
-							k = j;
-					if (std::abs(dataMatrix[k][i]) < EPS)
-					{
-						det = 0;
-						break;
-					}
-					std::swap(dataMatrix[i], dataMatrix[k]);
-					if (i != k)
-						det = -det;
-					det *= dataMatrix[i][i];
-					for (int j = i + 1; j < Rows; ++j)
-						dataMatrix[i][j] /= dataMatrix[i][i];
-					for (int j = 0; j < Rows; ++j)
-						if (j != i && std::abs(dataMatrix[j][i]) > EPS)
-							for (int k = i + 1; k < Rows; ++k)
-								dataMatrix[j][k] -= dataMatrix[i][k] * dataMatrix[j][i];
-				}
-				return det;
-			}
-
 			bool operator==(const Matrix&) const = default;
-
 			friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
 			{
 				for (const auto& row : matrix.dataMatrix)
