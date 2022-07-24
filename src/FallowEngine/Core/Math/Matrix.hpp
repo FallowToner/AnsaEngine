@@ -234,6 +234,34 @@ namespace fallow
 				}
 				return det;
 			}
+			constexpr auto determinant() requires(Rows == Columns)
+			{
+				const double EPS = 1E-9;
+				double       det = 1;
+				for (int i = 0; i < Rows; ++i)
+				{
+					int k = i;
+					for (int j = i + 1; j < Rows; ++j)
+						if (std::abs(dataMatrix[j][i]) > std::abs(dataMatrix[k][i]))
+							k = j;
+					if (std::abs(dataMatrix[k][i]) < EPS)
+					{
+						det = 0;
+						break;
+					}
+					std::swap(dataMatrix[i], dataMatrix[k]);
+					if (i != k)
+						det = -det;
+					det *= dataMatrix[i][i];
+					for (int j = i + 1; j < Rows; ++j)
+						dataMatrix[i][j] /= dataMatrix[i][i];
+					for (int j = 0; j < Rows; ++j)
+						if (j != i && std::abs(dataMatrix[j][i]) > EPS)
+							for (int k = i + 1; k < Rows; ++k)
+								dataMatrix[j][k] -= dataMatrix[i][k] * dataMatrix[j][i];
+				}
+				return det;
+			}
 			bool operator==(const Matrix&) const = default;
 			friend std::ostream& operator<<(std::ostream& os, const Matrix& matrix)
 			{
