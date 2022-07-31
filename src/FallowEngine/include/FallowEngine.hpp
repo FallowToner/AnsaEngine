@@ -4,6 +4,11 @@
 //---------MODULES---------//
 #include <Modules/Audio/AudioManager.hpp>
 #include <Modules/IO/Keyboard.hpp>
+//--Graphics
+#include <Modules/Graphics/Buffers/VAO.hpp>
+#include <Modules/Graphics/Buffers/VBO.hpp>
+#include <Modules/Graphics/FallowAlias.hpp>
+
 //-------CORE------//
 //--Window
 #include <Core/Window/Window.hpp>
@@ -19,10 +24,5 @@
 #include <Tools/Logger/LogBehavior.hpp>
 #include <Tools/Logger/LogStyle.hpp>
 #include <Tools/Logger/Logging.hpp>
-
-//------GRAPHICS------//
-#include <Graphics/Buffers/VAO.hpp>
-#include <Graphics/Buffers/VBO.hpp>
-#include <Graphics/FallowAlias.hpp>
 
 #endif // Fallow_Engine_Hpp

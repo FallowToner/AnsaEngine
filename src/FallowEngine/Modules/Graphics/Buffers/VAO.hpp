@@ -22,7 +22,22 @@ namespace fallow
 		class VAO final
 		{
 		public:
-			void bindBuffer();
+			VAO(GLuint id_) : id{id_}
+			{
+				glGenVertexArrays(1, &id);
+				bindBuffer();
+			}
+			void bindBuffer() { glBindVertexArray(id); }
+			void unbindBuffer() { glBindVertexArray(0);}
+
+			~VAO()
+			{
+				glDeleteVertexArrays(1, &id);
+				unbindBuffer();
+			}
+
+		private:
+			GLuint id;
 		};
 	} // namespace graphics
 } // namespace fallow

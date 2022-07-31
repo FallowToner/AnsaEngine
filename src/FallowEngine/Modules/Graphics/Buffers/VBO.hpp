@@ -34,9 +34,13 @@ namespace fallow
 			void loadBuffer(const T* buffer, DrawType drawingType)
 			{
 				drawType = drawingType;
-				glBufferData(as_integer(bufferType), sizeof(buffer), buffer, as_integer(drawingType));
+				glBufferData(as_integer(bufferType), sizeof(buffer), buffer, as_integer(drawType));
 			}
-
+			void loadBuffer(const T& container, DrawType drawingType) requires (is_array<T>::value)
+			{
+				drawType = drawingType;
+				glBufferData(as_integer(bufferType), container.size(), container.data(), as_integer(drawType));
+			}
 			~VBO() 
 			{
 				glDeleteBuffers(1, &id);

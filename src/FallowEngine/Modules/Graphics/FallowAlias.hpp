@@ -11,6 +11,9 @@
 #endif
 // clang-format on
 
+#include <array>
+#include <type_traits>
+
 namespace fallow
 {
 	namespace graphics
@@ -36,6 +39,15 @@ namespace fallow
 		{
 			return static_cast<std::underlying_type_t<E>>(e);
 		}
+
+		template<typename T>
+		struct is_array : std::is_array<T>
+		{};
+
+		// This required for supporting std::array like template parametr in binding VBO
+		template<typename T, std::size_t Size> 
+		struct is_array<std::array<T, Size>> : std::true_type
+		{};
 	} // namespace graphics
 } // namespace fallow
 

@@ -11,7 +11,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_subdirectory(Core)
 add_subdirectory(Modules)
 add_subdirectory(Tools)
-add_subdirectory(Graphics)
 
 set(ENGINE_SOURCES
       EntryPoint/Entrypoint.cpp
