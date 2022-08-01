@@ -3,7 +3,7 @@ if(WIN32 OR MSVC)
     set(CMAKE_TOOLCHAIN_FILE "C:\\Tools\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake")
     set(CMAKE_PREFIX_PATH "C:\\Tools\\vcpkg\\packages\\")
 endif()
-project(FallowGraphics)
+project(GraphicsBuffers)
 
 find_package(glfw3 REQUIRED)
 include(FindOpenGL)

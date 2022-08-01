@@ -36,18 +36,12 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
         PUBLIC
         #Core
-        WindowModule
-        FallowAllocator
-        FallowMath
-
+        FallowCore
+   
         #Tools
         FallowLogger
 
         # Modules
-        FallowIO
-        FallowAudio
-
-        #Graphics
-        FallowGraphics
+        FallowModules
         )
 #--------------------------------------

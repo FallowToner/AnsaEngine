@@ -11,5 +11,5 @@ add_library(FallowMath INTERFACE
 
 #set_target_properties(FallowMath PROPERTIES LINKER_LANGUAGE CXX)
 
-target_include_directories(FallowMath PRIVATE)
-target_link_libraries(FallowMath PRIVATE )
+target_include_directories(FallowMath INTERFACE glm)
+target_link_libraries(FallowMath INTERFACE )

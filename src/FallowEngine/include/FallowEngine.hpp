@@ -8,6 +8,7 @@
 #include <Modules/Graphics/Buffers/VAO.hpp>
 #include <Modules/Graphics/Buffers/VBO.hpp>
 #include <Modules/Graphics/FallowAlias.hpp>
+#include <Modules/Graphics/Components/Mash.hpp>
 
 //-------CORE------//
 //--Window
